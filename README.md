@@ -120,3 +120,41 @@ FROM Persons
 GROUP BY Country_name
 HAVING COUNT(*) > 2
 ORDER BY Avg_Rating ASC;
+-- 1. Perform INNER JOIN, LEFT JOIN, and RIGHT JOIN on the tables
+
+-- INNER JOIN: Returns only matching records from both tables
+SELECT p.Fname, p.Lname, c.Country_name, p.Rating
+FROM Persons p
+INNER JOIN Country c ON p.Country_Id = c.Id;
+
+-- LEFT JOIN: Returns all records from Persons table, with matching records from Country table
+-- If no match, NULL is returned for columns from Country table
+SELECT p.Fname, p.Lname, c.Country_name, p.Rating
+FROM Persons p
+LEFT JOIN Country c ON p.Country_Id = c.Id;
+
+-- RIGHT JOIN: Returns all records from Country table, with matching records from Persons table
+-- If no match, NULL is returned for columns from Persons table
+SELECT p.Fname, p.Lname, c.Country_name, p.Rating
+FROM Persons p
+RIGHT JOIN Country c ON p.Country_Id = c.Id;
+
+-- 2. List all distinct country names from both the Country and Persons tables
+SELECT DISTINCT Country_name
+FROM (
+    SELECT Country_name FROM Country
+    UNION
+    SELECT Country_name FROM Persons
+) AS DistinctCountries;
+
+-- 3. List all country names from both the Country and Persons tables, including duplicates
+SELECT Country_name
+FROM (
+    SELECT Country_name FROM Country
+    UNION ALL
+    SELECT Country_name FROM Persons
+) AS AllCountries;
+
+-- 4. Round the ratings of all persons to the nearest integer in the Persons table
+SELECT Fname, Lname, ROUND(Rating) AS Rounded_Rating
+FROM Persons;
