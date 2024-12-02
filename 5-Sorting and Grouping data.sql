@@ -1,122 +1,97 @@
--- 1. Create the database
-CREATE DATABASE IF NOT EXISTS MyDatabase;
+-- Create a new database named MyDatabase
+CREATE DATABASE MyDatabase;
 
--- 2. Use the database
+-- Use the newly created database
 USE MyDatabase;
 
--- 3. Create the 'Country' table
+-- Create the Country table
 CREATE TABLE Country (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    Country_name VARCHAR(255),
+    Id INT PRIMARY KEY,
+    Country_name VARCHAR(50),
     Population INT,
-    Area INT
+    Area FLOAT
 );
 
--- 4. Create the 'Persons' table
+-- Create the Persons table
 CREATE TABLE Persons (
-    Id INT PRIMARY KEY AUTO_INCREMENT,
-    Fname VARCHAR(255),
-    Lname VARCHAR(255),
+    Id INT PRIMARY KEY,
+    Fname VARCHAR(50),
+    Lname VARCHAR(50),
     Population INT,
-    Rating DECIMAL(3,2),
+    Rating FLOAT,
     Country_Id INT,
-    Country_name VARCHAR(255),
+    Country_name VARCHAR(50),
     FOREIGN KEY (Country_Id) REFERENCES Country(Id)
 );
 
--- 5. Insert data into the 'Country' table (10 rows)
-INSERT INTO Country (Country_name, Population, Area) 
-VALUES 
-('Country1', 1000000, 10000),
-('Country2', 2500000, 20000),
-('Country3', 1500000, 15000),
-('Country4', 500000, 5000),
-('Country5', 2000000, 25000),
-('Country6', 800000, 7000),
-('Country7', 1200000, 18000),
-('Country8', 900000, 13000),
-('Country9', 1100000, 14000),
-('Country10', 950000, 16000);
+-- Insert 10 rows into the Country table
+INSERT INTO Country (Id, Country_name, Population, Area) VALUES
+(1, 'USA', 331000000, 9833517),
+(2, 'India', 1380000000, 3287263),
+(3, 'China', 1440000000, 9596961),
+(4, 'Brazil', 212000000, 8515767),
+(5, 'Russia', 146000000, 17098242),
+(6, 'Japan', 126000000, 377975),
+(7, 'Germany', 83000000, 357022),
+(8, 'France', 67000000, 551695),
+(9, 'UK', 67000000, 243610),
+(10, 'Canada', 38000000, 9984670);
 
--- 6. Insert data into the 'Persons' table (10 rows)
-INSERT INTO Persons (Fname, Lname, Population, Rating, Country_Id, Country_name)
-VALUES
-('John', 'Doe', 30000, 4.5, 1, 'Country1'),
-('Jane', 'Smith', 25000, 4.8, 2, 'Country2'),
-('Alice', 'Johnson', 35000, 4.2, 3, 'Country3'),
-('Bob', 'Brown', 22000, 3.9, 4, 'Country4'),
-('Charlie', 'Davis', 40000, 4.7, 5, 'Country5'),
-('David', 'Wilson', 27000, 4.0, 6, 'Country6'),
-('Emma', 'Moore', 38000, 4.3, 7, 'Country7'),
-('Frank', 'Taylor', 21000, 4.1, 8, 'Country8'),
-('Grace', 'Anderson', 24000, 4.6, 9, 'Country9'),
-('Hannah', 'Thomas', 29000, 3.8, 10, 'Country10');
+-- Insert 10 rows into the Persons table
+INSERT INTO Persons (Id, Fname, Lname, Population, Rating, Country_Id, Country_name) VALUES
+(1, 'John', 'Doe', 10000, 4.5, 1, 'USA'),
+(2, 'Jane', 'Smith', 20000, 4.7, 2, 'India'),
+(3, 'Wei', 'Li', 15000, 4.8, 3, 'China'),
+(4, 'Carlos', 'Silva', 12000, 4.2, 4, 'Brazil'),
+(5, 'Olga', 'Ivanova', 11000, 4.6, 5, 'Russia'),
+(6, 'Yuki', 'Tanaka', 13000, 4.9, 6, 'Japan'),
+(7, 'Hans', 'Muller', 14000, 4.3, 7, 'Germany'),
+(8, 'Marie', 'Dubois', 16000, 4.4, 8, 'France'),
+(9, 'James', 'Brown', 17000, 4.5, 9, 'UK'),
+(10, 'Alice', 'White', 18000, 4.1, 10, 'Canada');
 
--- 7. Query to print the first three characters of Country_name from the Country table
-SELECT SUBSTRING(Country_name, 1, 3) AS Country_Prefix
-FROM Country;
+-- 1. Print the first three characters of Country_name
+SELECT LEFT(Country_name, 3) AS ShortName FROM Country;
 
--- 8. Query to concatenate first name and last name from the Persons table
-SELECT CONCAT(Fname, ' ', Lname) AS Full_Name
-FROM Persons;
+-- 2. Concatenate first name and last name from Persons table
+SELECT CONCAT(Fname, ' ', Lname) AS FullName FROM Persons;
 
--- 9. Query to count the number of unique country names from the Persons table
-SELECT COUNT(DISTINCT Country_name) AS Unique_Countries
-FROM Persons;
+-- 3. Count unique Country_name in Persons table
+SELECT COUNT(DISTINCT Country_name) AS UniqueCountries FROM Persons;
 
--- 10. Query to print the maximum population from the Country table
-SELECT MAX(Population) AS Max_Population
-FROM Country;
+-- 4. Print the maximum population from Country table
+SELECT MAX(Population) AS MaxPopulation FROM Country;
 
--- 11. Query to print the minimum population from the Persons table
-SELECT MIN(Population) AS Min_Population
-FROM Persons;
+-- 5. Print the minimum population from Persons table
+SELECT MIN(Population) AS MinPopulation FROM Persons;
 
--- 12. Insert 2 new rows into the Persons table making Lname NULL. Then count Lname values
--- Insert two new rows with NULL Lname
-INSERT INTO Persons (Fname, Lname, Population, Rating, Country_Id, Country_name)
-VALUES ('John', NULL, 30000, 4.5, 1, 'Country1'),
-       ('Jane', NULL, 25000, 4.8, 2, 'Country2');
+-- 6. Insert 2 new rows with Lname as NULL and count Lname
+INSERT INTO Persons (Id, Fname, Lname, Population, Rating, Country_Id, Country_name)
+VALUES (11, 'Nina', NULL, 9000, 3.9, 1, 'USA'), (12, 'Raj', NULL, 8000, 4.0, 2, 'India');
 
--- Count Lname values
-SELECT COUNT(Lname) AS Lname_Count
-FROM Persons
-WHERE Lname IS NOT NULL;
+SELECT COUNT(Lname) AS LnameCount FROM Persons;
 
--- 13. Query to find the number of rows in the Persons table
-SELECT COUNT(*) AS Total_Rows
-FROM Persons;
+-- 7. Find the number of rows in the Persons table
+SELECT COUNT(*) AS RowCount FROM Persons;
 
--- 14. Query to show the population of the Country table for the first 3 rows
-SELECT Population
-FROM Country
-LIMIT 3;
+-- 8. Show the population of the first 3 rows in Country
+SELECT Population FROM Country LIMIT 3;
 
--- 15. Query to print 3 random rows from the Country table
-SELECT *
-FROM Country
-ORDER BY RAND()
-LIMIT 3;
+-- 9. Print 3 random rows of countries
+SELECT * FROM Country ORDER BY RAND() LIMIT 3;
 
--- 16. List all persons ordered by their rating in descending order
-SELECT Fname, Lname, Rating
-FROM Persons
-ORDER BY Rating DESC;
+-- 10. List all persons ordered by their Rating in descending order
+SELECT * FROM Persons ORDER BY Rating DESC;
 
--- 17. Find the total population for each country in the Persons table
-SELECT Country_name, SUM(Population) AS Total_Population
-FROM Persons
-GROUP BY Country_name;
+-- 11. Find the total population for each country in Persons table
+SELECT Country_name, SUM(Population) AS TotalPopulation FROM Persons GROUP BY Country_name;
 
--- 18. Find countries in the Persons table with a total population greater than 50,000
-SELECT Country_name, SUM(Population) AS Total_Population
-FROM Persons
-GROUP BY Country_name
-HAVING SUM(Population) > 50000;
+-- 12. Find countries in Persons table with total population > 50,000
+SELECT Country_name FROM Persons GROUP BY Country_name HAVING SUM(Population) > 50000;
 
--- 19. List the total number of persons and average rating for each country, but only for countries with more than 2 persons, ordered by the average rating in ascending order
-SELECT Country_name, COUNT(*) AS Total_Persons, AVG(Rating) AS Avg_Rating
+-- 13. List total persons and average rating for each country with >2 persons
+SELECT Country_name, COUNT(*) AS TotalPersons, AVG(Rating) AS AvgRating
 FROM Persons
 GROUP BY Country_name
 HAVING COUNT(*) > 2
-ORDER BY Avg_Rating ASC;
+ORDER BY AvgRating ASC;
